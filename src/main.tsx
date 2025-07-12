@@ -7,6 +7,7 @@ import { queryClient } from "../utils/trpc";
 import { QueryClientProvider } from "@tanstack/react-query";
 import Home from "./routes/Home.tsx";
 import Personas from "./routes/Personas.tsx";
+import PersonaDetail from "./routes/PersonaDetail.tsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/personas",
         element: <Personas />,
+      },
+      {
+        path: "/personas/:id",
+        element: <PersonaDetail />,
       },
     ],
   },
