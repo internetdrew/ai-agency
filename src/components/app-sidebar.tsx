@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Bot } from "lucide-react";
 import { NavMain } from "@/components/nav-main";
-import { ClientSwitcher } from "@/components/client-switcher";
+// import { ClientSwitcher } from "@/components/client-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -22,7 +22,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <span className="font-semibold">AI Agency</span>
           </Link>
         </SidebarMenuButton>
-        <ClientSwitcher />
+        {/* <ClientSwitcher /> */}
       </SidebarHeader>
       <SidebarContent>
         <NavMain />
