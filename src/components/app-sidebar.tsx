@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Bot } from "lucide-react";
 import { NavMain } from "@/components/nav-main";
-import { NavUser } from "@/components/nav-user";
 import { ClientSwitcher } from "@/components/client-switcher";
 import {
   Sidebar,
@@ -12,15 +11,6 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { Link } from "react-router";
-
-// This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -37,9 +27,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+      <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
