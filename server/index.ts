@@ -7,10 +7,12 @@ import dotenv from "dotenv";
 import path from "path";
 import compression from "compression";
 import helmet from "helmet";
+import { clientsRouter } from "./routers/clients";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 export const appRouter = router({
+  clients: clientsRouter,
   greeting: publicProcedure
     .input(z.object({ intro: z.string() }))
     .query((opts) => {

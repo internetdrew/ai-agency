@@ -91,8 +91,7 @@ const Personas = () => {
                 <br />
                 Help us learn more about {persona.type} from your perspective.
                 If you look below, you'll see some important things we can chat
-                about. If you don't have a description, just say "No description
-                yet".
+                about.
               </CardDescription>
             </CardHeader>
             <CardContent>

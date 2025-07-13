@@ -111,10 +111,9 @@ const CreatePersonaDialog = ({
                     />
                   </FormControl>
                   <FormDescription>
-                    Add context about this specific persona. What makes them
-                    unique? What stage are they in? What's their situation?
-                    Don't worry about making it polished. Our AI will clean up
-                    the description so it's concise and punchy.
+                    Add context about this specific persona. Don't worry about
+                    making it polished. Our AI will clean up the description so
+                    it's concise and punchy.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

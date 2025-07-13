@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Bot } from "lucide-react";
 import { NavMain } from "@/components/nav-main";
-// import { ClientSwitcher } from "@/components/client-switcher";
+import { ClientSwitcher } from "@/components/client-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -19,10 +19,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenuButton asChild tooltip="Home">
           <Link to="/" className="flex items-center">
             <Bot className="text-pink-600" />
-            <span className="font-semibold">AI Agency</span>
+            <span className="font-semibold">
+              The Agent <sup className="text-xs">cy</sup>
+            </span>
           </Link>
         </SidebarMenuButton>
-        {/* <ClientSwitcher /> */}
+        <ClientSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <NavMain />
