@@ -24,9 +24,12 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { trpc } from "@/utils/trpc";
 import { useEffect, useState } from "react";
+import CreateClientDialog from "./CreateClientDialog";
 
 export function ClientSwitcher() {
   const [activeClient, setActiveClient] = useState<string | null>(null);
+  const [renderCreateClientDialog, setRenderCreateClientDialog] =
+    useState(false);
   const { isMobile } = useSidebar();
 
   const { data: clients } = useQuery(trpc.clients.list.queryOptions());
@@ -84,7 +87,10 @@ export function ClientSwitcher() {
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2">
+            <DropdownMenuItem
+              className="gap-2 p-2"
+              onClick={() => setRenderCreateClientDialog(true)}
+            >
               <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                 <Plus className="size-4" />
               </div>
@@ -95,6 +101,10 @@ export function ClientSwitcher() {
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
+      <CreateClientDialog
+        open={renderCreateClientDialog}
+        onOpenChange={setRenderCreateClientDialog}
+      />
     </SidebarMenu>
   );
 }
