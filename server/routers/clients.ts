@@ -2,8 +2,8 @@ import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
 
 export const clientsRouter = router({
-  getClients: publicProcedure.query(async () => {
-    return ["client1", "client2", "client3"];
+  list: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.client.findMany();
   }),
   create: publicProcedure
     .input(
@@ -11,7 +11,10 @@ export const clientsRouter = router({
         name: z.string(),
       }),
     )
-    .mutation(async ({ input }) => {
-      return `Created client ${input.name}`;
+    .mutation(async ({ input, ctx }) => {
+      const client = await ctx.prisma.client.create({
+        data: { name: input.name },
+      });
+      return client;
     }),
 });
