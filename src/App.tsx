@@ -7,6 +7,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "./components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           </div>
         </header>
         <Outlet />
+        <Toaster />
       </SidebarInset>
     </SidebarProvider>
   );
