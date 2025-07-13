@@ -20,7 +20,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <Link to="/" className="flex items-center">
             <Bot className="text-pink-600" />
             <span className="font-semibold">
-              The Agent <sup className="text-xs">cy</sup>
+              The Agent <sup className="text-xs">(cy)</sup>
             </span>
           </Link>
         </SidebarMenuButton>
