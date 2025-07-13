@@ -29,11 +29,11 @@ export function ClientSwitcher() {
   const [activeClient, setActiveClient] = useState<string | null>(null);
   const { isMobile } = useSidebar();
 
-  const { data: clients } = useQuery(trpc.clients.getClients.queryOptions());
+  const { data: clients } = useQuery(trpc.clients.list.queryOptions());
 
   useEffect(() => {
     if (clients && clients.length > 0) {
-      setActiveClient(clients[0]);
+      setActiveClient(clients[0]?.name);
     }
   }, [clients]);
 
@@ -48,13 +48,15 @@ export function ClientSwitcher() {
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                 {clients && clients.length > 0 ? (
-                  <UserRoundPlus className="size-4" />
-                ) : (
                   <Users className="size-4" />
+                ) : (
+                  <UserRoundPlus className="size-4" />
                 )}
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{activeClient}</span>
+                <span className="truncate font-medium">
+                  {activeClient || "No active client"}
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
@@ -70,14 +72,14 @@ export function ClientSwitcher() {
             </DropdownMenuLabel>
             {clients?.map((client, index) => (
               <DropdownMenuItem
-                key={client}
-                onClick={() => setActiveClient(client)}
+                key={client.id}
+                onClick={() => setActiveClient(client.name)}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-md border">
                   <UsersRound className="size-3.5 shrink-0" />
                 </div>
-                {client}
+                {client.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}

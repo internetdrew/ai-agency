@@ -1,9 +1,11 @@
-import { initTRPC } from '@trpc/server';
-import { CreateExpressContextOptions } from '@trpc/server/adapters/express';
+import { initTRPC } from "@trpc/server";
+import { CreateExpressContextOptions } from "@trpc/server/adapters/express";
+import { prisma } from "./db";
 
 export const createContext = ({ req, res }: CreateExpressContextOptions) => ({
   req,
   res,
+  prisma,
 });
 type Context = Awaited<ReturnType<typeof createContext>>;
 
