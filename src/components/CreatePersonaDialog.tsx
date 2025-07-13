@@ -20,6 +20,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
 
 interface CreatePersonaDialogProps {
   open: boolean;
@@ -36,6 +37,14 @@ const formSchema = z.object({
     .max(50, {
       message: "Persona names should be less than 50 characters.",
     }),
+  description: z
+    .string()
+    .min(2, {
+      message: "Description should be at least 2 characters.",
+    })
+    .max(200, {
+      message: "Description should be less than 200 characters.",
+    }),
 });
 
 const CreatePersonaDialog = ({
@@ -47,13 +56,18 @@ const CreatePersonaDialog = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       type: "",
+      description: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    onPersonaCreated((prev: Persona[]) => [...prev, { type: values.type }]);
+    onPersonaCreated((prev: Persona[]) => [
+      ...prev,
+      { type: values.type, description: values.description },
+    ]);
     onOpenChange(false);
   }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -73,11 +87,34 @@ const CreatePersonaDialog = ({
                 <FormItem>
                   <FormLabel>Persona Type</FormLabel>
                   <FormControl>
-                    <Input placeholder="Startup Founder" {...field} />
+                    <Input placeholder="Startup Founders" {...field} />
                   </FormControl>
                   <FormDescription>
                     We'll use this name to identify the persona around the app.
                     Keep it simple and easy to distinguish.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="e.g., High-growth founders with Series A+ funding, 10+ employees, scaling rapidly"
+                      className="resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Add context about this specific persona. What makes them
+                    unique? What stage are they in? What's their situation?
+                    Don't worry about making it polished. Our AI will clean up
+                    the description so it's concise and punchy.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

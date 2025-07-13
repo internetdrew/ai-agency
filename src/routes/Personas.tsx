@@ -21,6 +21,7 @@ import { useState } from "react";
 
 export interface Persona {
   type: string;
+  description: string;
 }
 
 const personaFields = [
@@ -85,9 +86,13 @@ const Personas = () => {
             <CardHeader>
               <CardTitle>{persona.type}</CardTitle>
               <CardDescription>
+                <span>{persona.description}</span>
+                <br />
+                <br />
                 Help us learn more about {persona.type} from your perspective.
                 If you look below, you'll see some important things we can chat
-                about.
+                about. If you don't have a description, just say "No description
+                yet".
               </CardDescription>
             </CardHeader>
             <CardContent>
