@@ -21,6 +21,7 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
+import { useEffect } from "react";
 
 interface CreatePersonaDialogProps {
   open: boolean;
@@ -67,6 +68,10 @@ const CreatePersonaDialog = ({
     ]);
     onOpenChange(false);
   }
+
+  useEffect(() => {
+    form.reset();
+  }, [form, form.formState.isSubmitSuccessful]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
