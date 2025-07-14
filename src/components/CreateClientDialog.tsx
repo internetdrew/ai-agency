@@ -63,6 +63,9 @@ const CreateClientDialog = ({
           queryClient.invalidateQueries(trpc.clients.list.queryOptions());
           onOpenChange(false);
         },
+        onError: (error) => {
+          toast.error(error.message);
+        },
       },
     );
   }
