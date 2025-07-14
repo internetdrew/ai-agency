@@ -7,11 +7,13 @@ import path from "path";
 import compression from "compression";
 import helmet from "helmet";
 import { clientsRouter } from "./routers/clients";
+import { personasRouter } from "./routers/personas";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 export const appRouter = router({
   clients: clientsRouter,
+  personas: personasRouter,
 });
 
 const corsOptions = {
