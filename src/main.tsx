@@ -8,13 +8,16 @@ import Home from "./routes/Home.tsx";
 import Personas from "./routes/Personas.tsx";
 import PersonaDetail from "./routes/PersonaDetail.tsx";
 import "./index.css";
+import { ActiveClientProvider } from "./contexts/ActiveClient.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <QueryClientProvider client={queryClient}>
-        <App />
+        <ActiveClientProvider>
+          <App />
+        </ActiveClientProvider>
       </QueryClientProvider>
     ),
     children: [

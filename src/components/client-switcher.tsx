@@ -25,9 +25,10 @@ import { useQuery } from "@tanstack/react-query";
 import { trpc } from "@/utils/trpc";
 import { useEffect, useState } from "react";
 import CreateClientDialog from "./CreateClientDialog";
+import { useActiveClient } from "@/contexts/ActiveClient";
 
 export function ClientSwitcher() {
-  const [activeClient, setActiveClient] = useState<string | null>(null);
+  const { activeClient, setActiveClient } = useActiveClient();
   const [renderCreateClientDialog, setRenderCreateClientDialog] =
     useState(false);
   const { isMobile } = useSidebar();
@@ -36,9 +37,9 @@ export function ClientSwitcher() {
 
   useEffect(() => {
     if (clients && clients.length > 0) {
-      setActiveClient(clients[0]?.name);
+      setActiveClient(clients[0]);
     }
-  }, [clients]);
+  }, [clients, setActiveClient]);
 
   return (
     <SidebarMenu>
@@ -58,7 +59,7 @@ export function ClientSwitcher() {
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {activeClient || "No active client"}
+                  {activeClient?.name || "No active client"}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
@@ -76,7 +77,7 @@ export function ClientSwitcher() {
             {clients?.map((client, index) => (
               <DropdownMenuItem
                 key={client.id}
-                onClick={() => setActiveClient(client.name)}
+                onClick={() => setActiveClient(client)}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-md border">
