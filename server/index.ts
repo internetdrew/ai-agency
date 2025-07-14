@@ -1,8 +1,7 @@
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import express from "express";
 import cors from "cors";
-import { publicProcedure, router, createContext } from "./trpc";
-import { z } from "zod";
+import { router, createContext } from "./trpc";
 import dotenv from "dotenv";
 import path from "path";
 import compression from "compression";
@@ -13,12 +12,6 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 export const appRouter = router({
   clients: clientsRouter,
-  greeting: publicProcedure
-    .input(z.object({ intro: z.string() }))
-    .query((opts) => {
-      const { input } = opts;
-      return `${input.intro} LyteStack` as const;
-    }),
 });
 
 const corsOptions = {
