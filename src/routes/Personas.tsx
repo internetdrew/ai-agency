@@ -7,6 +7,9 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
+import { useActiveClient } from "@/contexts/ActiveClient";
+import { trpc } from "@/utils/trpc";
+import { useQuery } from "@tanstack/react-query";
 import {
   Activity,
   Brain,
@@ -18,11 +21,6 @@ import {
   Target,
 } from "lucide-react";
 import { useState } from "react";
-
-export interface Persona {
-  type: string;
-  description: string;
-}
 
 const personaFields = [
   {
@@ -63,8 +61,15 @@ const personaFields = [
 ];
 
 const Personas = () => {
+  const { activeClient } = useActiveClient();
   const [renderPersonaDialog, setRenderPersonaDialog] = useState(false);
-  const [personas, setPersonas] = useState<Persona[]>([]);
+
+  const { data: personas } = useQuery(
+    trpc.personas.list.queryOptions(
+      { clientId: activeClient?.id ?? 0 },
+      { enabled: !!activeClient },
+    ),
+  );
 
   return (
     <>
@@ -81,15 +86,15 @@ const Personas = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 p-4 pt-0 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {personas.map((persona) => (
-          <Card key={persona.type}>
+        {personas?.map((persona) => (
+          <Card key={persona.id}>
             <CardHeader>
-              <CardTitle>{persona.type}</CardTitle>
+              <CardTitle>{persona.name}</CardTitle>
               <CardDescription>
                 <span>{persona.description}</span>
                 <br />
                 <br />
-                Help us learn more about {persona.type} from your perspective.
+                Help us learn more about {persona.name} from your perspective.
                 If you look below, you'll see some important things we can chat
                 about.
               </CardDescription>
@@ -125,7 +130,6 @@ const Personas = () => {
       <CreatePersonaDialog
         open={renderPersonaDialog}
         onOpenChange={setRenderPersonaDialog}
-        onPersonaCreated={setPersonas}
       />
     </>
   );
