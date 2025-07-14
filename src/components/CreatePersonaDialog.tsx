@@ -5,7 +5,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { Persona } from "@/routes/Personas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,15 +21,18 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { useEffect } from "react";
+import { useActiveClient } from "@/contexts/ActiveClient";
+import { queryClient, trpc } from "@/utils/trpc";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface CreatePersonaDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onPersonaCreated: React.Dispatch<React.SetStateAction<Persona[]>>;
 }
 
 const formSchema = z.object({
-  type: z
+  name: z
     .string()
     .min(2, {
       message: "Persona names should be at least 2 characters.",
@@ -51,22 +53,44 @@ const formSchema = z.object({
 const CreatePersonaDialog = ({
   open,
   onOpenChange,
-  onPersonaCreated,
 }: CreatePersonaDialogProps) => {
+  const { activeClient } = useActiveClient();
+
+  const personaCreationMutation = useMutation(
+    trpc.personas.create.mutationOptions(),
+  );
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      type: "",
+      name: "",
       description: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    onPersonaCreated((prev: Persona[]) => [
-      ...prev,
-      { type: values.type, description: values.description },
-    ]);
-    onOpenChange(false);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!activeClient) return;
+
+    await personaCreationMutation.mutateAsync(
+      {
+        name: values.name,
+        description: values.description,
+        clientId: activeClient.id,
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: trpc.personas.list.queryKey(),
+          });
+          onOpenChange(false);
+          toast.success("Persona created successfully");
+        },
+        onError: (error) => {
+          console.error(error);
+          toast.error("Failed to create persona. Please try again.");
+        },
+      },
+    );
   }
 
   useEffect(() => {
@@ -87,10 +111,10 @@ const CreatePersonaDialog = ({
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="type"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Persona Type</FormLabel>
+                  <FormLabel>Persona Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Startup Founders" {...field} />
                   </FormControl>
